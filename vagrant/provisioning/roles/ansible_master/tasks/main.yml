@@ -1,0 +1,5 @@
+- name: 1.Install ansible package 
+  package: 
+    state: present 
+    name: "{{ item }}"
+  loop: "{{ packages }}"
