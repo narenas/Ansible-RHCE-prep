@@ -17,7 +17,10 @@ pipeline {
 
     stage('Destroy environment') {
       steps {
-        sh 'vagrant destroy'
+        sh '''
+        cd vagrant
+        vagrant destroy
+        '''
       }
     }
 

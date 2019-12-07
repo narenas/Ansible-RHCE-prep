@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
 
   (1..num_nodes).each do |i| 
     if i == 1 
-        config.vm.define "bastion" do node
+        config.vm.define "bastion" do |node|
             node.vm.box = "centos/8"   
             node.vm.hostname = "bastion" 
             node.vm.network :private_network, 
@@ -43,7 +43,7 @@ Vagrant.configure("2") do |config|
             :ip =>  "192.168.122.#{ i + 20 }"
         end 
     else
-        config.vm.define "server#{i}" do node
+        config.vm.define "server#{i}" do |node|
             node.vm.box = "centos/8"
             node.vm.hostname = "server#{i}"  
             node.vm.network :private_network, 
