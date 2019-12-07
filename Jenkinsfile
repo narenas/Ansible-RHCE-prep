@@ -10,8 +10,17 @@ pipeline {
       steps {
         sh '''
             cd vagrant
+            vagrant destroy 
             vagrant up 
 '''
+      }
+      post {
+          failure {
+              sh '''
+                cd vagrant
+                vagrant destroy
+              '''
+          }
       }
     }
 
