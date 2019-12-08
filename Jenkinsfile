@@ -16,7 +16,7 @@ pipeline {
                 sh '''
                     cd vagrant
                     vagrant destroy -f
-                    VAGRANT_NUM_NODES=${params.VAGRANT_NUM_NODES} vagrant up 
+                    vagrant up 
                 '''
             }
             post {
