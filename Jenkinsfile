@@ -7,6 +7,9 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
+    environment {
+        VAGRANT_NUM_NODES = "3"
+    }
     stages {
         stage('Build Vagrant env') {
             steps {

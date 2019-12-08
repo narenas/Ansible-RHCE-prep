@@ -28,8 +28,8 @@ Vagrant.configure("2") do |config|
       bastion.push("bastion")
       nodes.push("bastion")
     else
-      nodes.push("server#{i}")
-      hosts.push("server#{i}")
+      nodes.push("server#{i-1}")
+      hosts.push("server#{i-1}")
     end
   end
 
@@ -49,9 +49,9 @@ Vagrant.configure("2") do |config|
             :ip =>  "192.168.200.#{ i + 20 }"
         end 
     else
-        config.vm.define "server#{i}" do |node|
+        config.vm.define "server#{i-1}" do |node|
             node.vm.box = "centos/8"
-            node.vm.hostname = "server#{i}"  
+            node.vm.hostname = "server#{i-1}"  
             node.vm.network :private_network, 
             :libvirt__network_name =>  "galera-cluster" , 
             :ip =>  "192.168.200.#{ i + 20 }"
