@@ -1,0 +1,7 @@
+---
+- name: Bastion 
+  hosts: bastion 
+  become: true 
+  roles: 
+    - epel 
+    - ansible_master

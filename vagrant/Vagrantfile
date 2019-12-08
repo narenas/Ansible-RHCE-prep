@@ -1,0 +1,66 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
+
+Vagrant.configure("2") do |config|
+
+  config.vm.provider :libvirt do |libvirt| 
+    libvirt.uri = "qemu:///system"
+    libvirt.storage_pool_name = "vagrant"
+  end 
+
+  num_nodes = ENV['VAGRANT_NUM_NODES'].to_i
+  
+  if num_nodes.nil?
+    num_nodes = 2 
+  end
+
+  nodes = []
+  bastion = []
+  hosts = [] 
+
+  (1..num_nodes).each do |i|
+    if i == 1
+      bastion.push("bastion")
+      nodes.push("bastion")
+    else
+      nodes.push("server#{i-1}")
+      hosts.push("server#{i-1}")
+    end
+  end
+
+  groups = {
+    "nodes" => nodes , 
+    "bastion" => bastion , 
+    "hosts" => hosts
+  }
+
+  (1..num_nodes).each do |i| 
+    if i == 1 
+        config.vm.define "bastion" do |node|
+            node.vm.box = "centos/8"   
+            node.vm.hostname = "bastion" 
+            node.vm.network :private_network, 
+            :libvirt__network_name =>  "galera-cluster" , 
+            :ip =>  "192.168.200.#{ i + 20 }"
+        end 
+    else
+        config.vm.define "server#{i-1}" do |node|
+            node.vm.box = "centos/8"
+            node.vm.hostname = "server#{i-1}"  
+            node.vm.network :private_network, 
+            :libvirt__network_name =>  "galera-cluster" , 
+            :ip =>  "192.168.200.#{ i + 20 }"
+        end 
+    end 
+  end
+  config.vm.provision :ansible do |ansible|
+    ansible.groups = groups
+    ansible.playbook = "provisioning/playbook.yml"
+  end
+end
