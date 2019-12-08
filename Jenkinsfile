@@ -7,8 +7,8 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
-    environment {
-        VAGRANT_NUM_NODES = "3"
+    parameters {
+        string(defaultValue: "3" , name: "VAGRANT_NUM_NODES")
     }
     stages {
         stage('Build Vagrant env') {
@@ -16,7 +16,7 @@ pipeline {
                 sh '''
                     cd vagrant
                     vagrant destroy -f
-                    vagrant up 
+                    VAGRANT_NUM_NODES=${params.VAGRANT_NUM_NODES} vagrant up 
                 '''
             }
             post {
