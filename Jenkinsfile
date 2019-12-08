@@ -20,7 +20,7 @@ pipeline {
                 failure {
                     sh '''
                         cd vagrant
-                        vagrant -f destroy
+                        vagrant destroy -f
                     '''
                 }
             }
@@ -29,7 +29,7 @@ pipeline {
             steps {
                 sh '''
                     cd vagrant
-                    vagrant -f destroy
+                    vagrant destroy -f
                 '''
             }
         }
