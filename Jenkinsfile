@@ -10,6 +10,9 @@ pipeline {
     parameters {
         string(defaultValue: "3" , name: "VAGRANT_NUM_NODES")
     }
+    environment {
+        VAGRANT_DEFAULT_PROVIDER = 'libvirt'
+    }
     stages {
         stage('Build Vagrant env') {
             steps {

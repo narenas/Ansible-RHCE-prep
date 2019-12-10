@@ -4,4 +4,12 @@
   become: true 
   roles: 
     - epel 
+    - common 
     - ansible_master
+
+- name: hosts
+  hosts: hosts
+  become: true
+  roles: 
+    - epel
+    - common

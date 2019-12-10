@@ -1,0 +1,28 @@
+- name: 1.Install common packages 
+  package: 
+    state: present 
+    name: "{{ item }}"
+  loop: "{{ common_packages }}"
+
+- name: Create Ansible user in all hosts
+  user: 
+    name: ansible
+    uid: '1050' 
+    group: wheel 
+    append: yes 
+    generate_ssh_key: yes 
+    password: $6$mysecretsalt$pYGf02hsuplCz8xx02leSOkmwlbZc/snI6Ks9FFQsIDPR9phRWUAgUKJZWSLAuSMh1jKWOeS8Pf1P8vXG.3iS1
+
+- name: Enable avahi daemon service 
+  systemd:
+      state: started
+      name: avahi-daemon
+
+- name: sudo confgi for ansible user
+  copy:
+    src: ansible
+    dest: /etc/sudoers.d/ 
+    owner: root 
+    group: root 
+    mode: '0644' 
+    
